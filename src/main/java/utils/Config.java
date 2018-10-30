@@ -47,13 +47,9 @@ public final class Config {
     return DATABASE_NAME;
   }
 
-  public static Boolean getEncryption() {
-    return ENCRYPTION;
-  }
+  public static Boolean getEncryption() { return ENCRYPTION; }
 
-  public static char[] getEncryptionkey() {
-    return ENCRYOPTIONKEY.toCharArray();
-  }
+  public static char[] getEncryptionkey() { return ENCRYOPTIONKEY.toCharArray(); }
 
   public static String getSolrHost() {
     return SOLR_HOST;
