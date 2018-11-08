@@ -55,7 +55,7 @@ public class UserController {
   }
 
 
-
+// Selv tilføjet
   public static User getUserByEmail(String email) {
 
     // Check for connection
@@ -64,7 +64,7 @@ public class UserController {
     }
 
     // Build the query for DB
-    String sql = "SELECT * FROM user where email=" + email;
+    String sql = "SELECT * FROM user where email='" + email +"'";
 
     // Actually do the query
     ResultSet rs = dbCon.query(sql);
@@ -84,7 +84,7 @@ public class UserController {
         // return the create object
         return user;
       } else {
-        System.out.println("No user found");
+        System.out.println("No User found");
       }
     } catch (SQLException ex) {
       System.out.println(ex.getMessage());

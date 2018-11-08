@@ -102,8 +102,10 @@ public class UserEndpoints {
 
     User dbUser = UserController.getUserByEmail(loginUser.getEmail());
 
-    if (loginUser == dbUser){
-      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(dbUser).build();
+    String json =new Gson().toJson(dbUser);
+
+    if (loginUser.getEmail().equals(dbUser.getEmail())){
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
       // Return a response with status 200 and JSON as type
       return Response.status(400).entity("Endpoint not implemented yet").build();
