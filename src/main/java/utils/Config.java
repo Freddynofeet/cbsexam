@@ -20,11 +20,11 @@ public final class Config {
   private static int SOLR_PORT;
   private static String SOLR_PATH;
   private static String SOLR_CORE;
-  private static long PRODUCT_TTL;
+  private static long Cache_TTL;
 
 
-  public static long getProductTtl() {
-    return PRODUCT_TTL;
+  public static long getCacheTtl() {
+    return Cache_TTL;
   }
 
   public static String getDatabaseHost() {
@@ -100,7 +100,7 @@ public final class Config {
     SOLR_PORT = Integer.parseInt(json.get("SOLR_PORT").toString().replace("\"", ""));
     SOLR_PATH = json.get("SOLR_PATH").toString().replace("\"", "");
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
-    PRODUCT_TTL = json.get("PRODUCT_TTL").getAsLong();
+    Cache_TTL = json.get("CACHE_TTL").getAsLong();
     ENCRYOPTIONKEY = json.get("ENCRYPTIONKEY").getAsString();
 
   }

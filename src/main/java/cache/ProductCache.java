@@ -17,7 +17,7 @@ public class ProductCache {
   private long created;
 
   public ProductCache() {
-    this.ttl = Config.getProductTtl();
+    this.ttl = Config.getCacheTtl();
   }
 
   public ArrayList<Product> getProducts(Boolean forceUpdate) {
