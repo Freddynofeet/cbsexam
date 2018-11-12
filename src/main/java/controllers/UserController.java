@@ -3,6 +3,9 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import model.User;
 import utils.Hashing;
 import utils.Log;
@@ -80,6 +83,10 @@ public class UserController {
                         rs.getString("password"),
                         rs.getString("email"),
                         rs.getLong("created_at"));
+        //Selv tilføjet
+        Algorithm algorithm = Algorithm.HMAC256("secret");
+        String token = JWT.create().withClaim("userId", user.getId()).sign(algorithm);
+        user.setToken(token);
 
         // return the create object
         return user;

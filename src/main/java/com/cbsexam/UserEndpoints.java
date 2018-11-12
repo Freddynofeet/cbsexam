@@ -2,6 +2,9 @@ package com.cbsexam;
 
 import cache.ProductCache;
 import cache.UserCache;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import controllers.UserController;
 import java.util.ArrayList;
@@ -11,9 +14,13 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
+
+import javassist.bytecode.stackmap.BasicBlock;
 import model.User;
 import utils.Encryption;
+import utils.Hashing;
 import utils.Log;
 
 @Path("user")
@@ -104,7 +111,7 @@ public class UserEndpoints {
 
     String json =new Gson().toJson(dbUser);
 
-    if (loginUser.getEmail().equals(dbUser.getEmail())){
+    if (loginUser.getEmail().equals(dbUser.getEmail()) && loginUser.getPassword().equals(dbUser.getPassword())){
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
       // Return a response with status 200 and JSON as type
@@ -116,13 +123,21 @@ public class UserEndpoints {
 
   // TODO: Make the system able to delete users : fix
   @POST
-  @Path("/delete/{idUser}")
-  public Response deleteUser( @PathParam("idUser") int id) {
+  @Path("/delete/")
+  public Response deleteUser(String token) {
+//selv tilføjet
+    DecodedJWT jwt = null;
 
-    UserController.delete(id);
+    try {
+      jwt = JWT.decode(token);
+
+    } catch (JWTDecodeException exception){
+    }
+
+    UserController.delete(jwt.getClaim("userId").asInt());
 
     // Return a response with status 200 and JSON as type
-    return Response.status(200).entity("User with id " +  id + " is now deleted").build();
+    return Response.status(200).entity("User with id is now deleted").build();
   }
 
   // TODO: Make the system able to update users
