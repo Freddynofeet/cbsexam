@@ -8,11 +8,7 @@ import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import controllers.UserController;
 import java.util.ArrayList;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.NewCookie;
 import javax.ws.rs.core.Response;
@@ -35,20 +31,27 @@ public class UserEndpoints {
   @GET
   @Path("/{idUser}")
   public Response getUser(@PathParam("idUser") int idUser) {
+//Selv tilføjet
+    try {
 
-    // Use the ID to get the user from the controller.
-    User user = UserController.getUser(idUser);
+      // Use the ID to get the user from the controller.
+      User user = UserController.getUser(idUser);
 
-    // TODO: Add Encryption to JSON : fix
-    // Convert the user object to json in order to return the object
-    String json = new Gson().toJson(user);
+      // TODO: Add Encryption to JSON : fix
+      // Convert the user object to json in order to return the object
+      String json = new Gson().toJson(user);
 
-    // Added encryption
-    json = Encryption.encryptDecryptXOR(json);
+      // Added encryption
+      json = Encryption.encryptDecryptXOR(json);
 
-    // Return the user with the status code 200
-    // TODO: What should happen if something breaks down?
-    return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
+      // Return the user with the status code 200
+      // TODO: What should happen if something breaks down? : fix
+
+      return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
+      // Selv tilføjet
+    } catch (Exception e){
+      return Response.status(400).type(MediaType.APPLICATION_JSON_TYPE).entity("Could not get user").build();
+    }
   }
 
   /** @return Responses */
@@ -122,23 +125,35 @@ public class UserEndpoints {
   }
 
   // TODO: Make the system able to delete users : fix
-  @POST
+  @DELETE
   @Path("/delete/")
   public Response deleteUser(String token) {
 //selv tilføjet
-    DecodedJWT jwt = null;
-
     try {
-      jwt = JWT.decode(token);
 
-    } catch (JWTDecodeException exception){
+      DecodedJWT jwt = null;
+
+      try {
+        jwt = JWT.decode(token);
+
+      } catch (JWTDecodeException exception) {
+        System.out.println(exception.getMessage());
+      }
+
+      User user = UserController.getUser(jwt.getClaim("userId").asInt());
+
+        UserController.delete(user.getId());
+        userCache.getUsers(true);
+
+        return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("User with id is now deleted").build();
+
+
+// Selv tilføjet
+    } catch (Exception e) {
+      return Response.status(400).type(MediaType.APPLICATION_JSON_TYPE).entity("Could not delete user or does not exist").build();
     }
-
-    UserController.delete(jwt.getClaim("userId").asInt());
-
-    // Return a response with status 200 and JSON as type
-    return Response.status(200).entity("User with id is now deleted").build();
   }
+
 
   // TODO: Make the system able to update users
   public Response updateUser(String x) {
