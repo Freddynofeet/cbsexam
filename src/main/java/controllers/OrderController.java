@@ -127,47 +127,69 @@ public class OrderController {
     if (dbCon == null) {
       dbCon = new DatabaseController();
     }
+// Selv tilføjet
+    try {
 
-    // Save addresses to database and save them back to initial order instance
-    order.setBillingAddress(AddressController.createAddress(order.getBillingAddress()));
-    order.setShippingAddress(AddressController.createAddress(order.getShippingAddress()));
+      DatabaseController.getConnection().setAutoCommit(false);
+      // Save addresses to database and save them back to initial order instance
+      order.setBillingAddress(AddressController.createAddress(order.getBillingAddress()));
+      order.setShippingAddress(AddressController.createAddress(order.getShippingAddress()));
 
-    // Save the user to the database and save them back to initial order instance
-    order.setCustomer(UserController.createUser(order.getCustomer()));
+      // Save the user to the database and save them back to initial order instance
+      order.setCustomer(UserController.createUser(order.getCustomer()));
 
-    // TODO: Enable transactions in order for us to not save the order if somethings fails for some of the other inserts.
+      // TODO: Enable transactions in order for us to not save the order if somethings fails for some of the other inserts.
 
-    // Insert the product in the DB
-    int orderID = dbCon.insert(
-        "INSERT INTO orders(user_id, billing_address_id, shipping_address_id, order_total, created_at, updated_at) VALUES("
-            + order.getCustomer().getId()
-            + ", "
-            + order.getBillingAddress().getId()
-            + ", "
-            + order.getShippingAddress().getId()
-            + ", "
-            + order.calculateOrderTotal()
-            + ", "
-            + order.getCreatedAt()
-            + ", "
-            + order.getUpdatedAt()
-            + ")");
+      // Insert the product in the DB
+      int orderID = dbCon.insert(
+              "INSERT INTO orders(user_id, billing_address_id, shipping_address_id, order_total, created_at, updated_at) VALUES("
+                      + order.getCustomer().getId()
+                      + ", "
+                      + order.getBillingAddress().getId()
+                      + ", "
+                      + order.getShippingAddress().getId()
+                      + ", "
+                      + order.calculateOrderTotal()
+                      + ", "
+                      + order.getCreatedAt()
+                      + ", "
+                      + order.getUpdatedAt()
+                      + ")");
 
-    if (orderID != 0) {
-      //Update the productid of the product before returning
-      order.setId(orderID);
+      if (orderID != 0) {
+        //Update the productid of the product before returning
+        order.setId(orderID);
+      }
+
+      // Create an empty list in order to go trough items and then save them back with ID
+      ArrayList<LineItem> items = new ArrayList<LineItem>();
+
+      // Save line items to database
+      for (LineItem item : order.getLineItems()) {
+        item = LineItemController.createLineItem(item, order.getId());
+        items.add(item);
+
+        //Selv tilføjet
+        DatabaseController.getConnection().commit();
+      }
+
+      order.setLineItems(items);
+    }catch (SQLException e){
+      try {
+        //Closes the connection to database
+        DatabaseController.getConnection().rollback();
+      }catch (SQLException e1) {
+        e1.printStackTrace();
+      }
+
+    } //selv tilføjet
+    finally {
+      try{DatabaseController.getConnection().setAutoCommit(true);
+
+      } catch (SQLException e) {
+        e.printStackTrace();
+      }
     }
-
-    // Create an empty list in order to go trough items and then save them back with ID
-    ArrayList<LineItem> items = new ArrayList<LineItem>();
-
-    // Save line items to database
-    for(LineItem item : order.getLineItems()){
-      item = LineItemController.createLineItem(item, order.getId());
-      items.add(item);
-    }
-
-    order.setLineItems(items);
 
     // Return order
     return order;
