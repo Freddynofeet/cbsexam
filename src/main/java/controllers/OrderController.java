@@ -3,6 +3,9 @@ package controllers;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+
+import cache.OrderCache;
+import com.cbsexam.OrderEndpoints;
 import model.Address;
 import model.LineItem;
 import model.Order;
@@ -138,7 +141,7 @@ public class OrderController {
       // Save the user to the database and save them back to initial order instance
       order.setCustomer(UserController.createUser(order.getCustomer()));
 
-      // TODO: Enable transactions in order for us to not save the order if somethings fails for some of the other inserts.
+      // TODO: Enable transactions in order for us to not save the order if somethings fails for some of the other inserts. : fix
 
       // Insert the product in the DB
       int orderID = dbCon.insert(
@@ -169,11 +172,11 @@ public class OrderController {
         item = LineItemController.createLineItem(item, order.getId());
         items.add(item);
 
-        //Selv tilføjet
-        DatabaseController.getConnection().commit();
+
       }
 
       order.setLineItems(items);
+      DatabaseController.getConnection().commit();
     }catch (SQLException e){
       try {
         //Closes the connection to database
@@ -190,6 +193,9 @@ public class OrderController {
         e.printStackTrace();
       }
     }
+
+    //Updates the orderCache
+    OrderEndpoints.orderCache.getOrders(true);
 
     // Return order
     return order;

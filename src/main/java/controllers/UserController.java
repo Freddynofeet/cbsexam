@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.google.gson.Gson;
 import model.User;
 import utils.Hashing;
 import utils.Log;
@@ -84,8 +85,9 @@ public class UserController {
                         rs.getString("email"),
                         rs.getLong("created_at"));
         //Selv tilføjet
+        String json = new Gson().toJson(user);
         Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create().withClaim("userId", user.getId()).sign(algorithm);
+        String token = JWT.create().withClaim("userJson", json).sign(algorithm);
         user.setToken(token);
 
         // return the create object
@@ -198,4 +200,30 @@ public class UserController {
     dbCon.deleteUpdate(sql);
 
   }
+
+  public static boolean updateUser(User userInfo, User userToChange) {
+
+    if (dbCon == null)
+      dbCon = new DatabaseController();
+
+    if (userInfo.getFirstname() != null)
+      userToChange.setFirstname(userInfo.getFirstname());
+    if (userInfo.getLastname() != null)
+      userToChange.setLastname(userInfo.lastname);
+    if (userInfo.getPassword() != null)
+      userToChange.setPassword(userInfo.getPassword());
+    if (userInfo.getEmail() != null)
+      userToChange.setEmail(userInfo.getEmail());
+
+    String sql = "UPDATE user set first_name= '" + userToChange.getFirstname() +
+            "', last_name = '" + userToChange.getLastname() +
+            "', password = '" + userToChange.getPassword() +
+            "', email = '" + userToChange.getEmail() +
+            "', WHERE id = " + userToChange.getId();
+
+    dbCon.deleteUpdate(sql);
+
+    return true;
+  }
+
 }

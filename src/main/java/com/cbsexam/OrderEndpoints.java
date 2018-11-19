@@ -19,7 +19,7 @@ import utils.Encryption;
 public class OrderEndpoints {
 
   // Selv tilføjet
-  private static OrderCache orderCache = new OrderCache();
+  public static OrderCache orderCache = new OrderCache();
 
   /**
    * @param idOrder

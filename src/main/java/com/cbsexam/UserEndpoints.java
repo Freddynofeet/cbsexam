@@ -106,9 +106,9 @@ public class UserEndpoints {
   @POST
   @Path("/login")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response loginUser(String x) {
+  public Response loginUser(String loginInfo) {
 
-    User loginUser = new Gson().fromJson(x, User.class);
+    User loginUser = new Gson().fromJson(loginInfo, User.class);
 
     User dbUser = UserController.getUserByEmail(loginUser.getEmail());
 
@@ -154,9 +154,26 @@ public class UserEndpoints {
     }
   }
 
-
+// Selv tilføjet
   // TODO: Make the system able to update users
-  public Response updateUser(String x) {
+  @POST
+  @Path("/update")
+  public Response updateUser(String updateInfo) {
+
+    User userInfo = new Gson().fromJson(updateInfo, User.class);
+
+    DecodedJWT jwt = null;
+    try{
+      jwt = JWT.decode(userInfo.getToken());
+    }catch (JWTDecodeException e){
+      e.printStackTrace();
+    }
+
+    User userToChange = new Gson().fromJson(jwt.getClaim("userJson").asString(), User.class);
+
+    UserController.updateUser(userInfo, userToChange);
+
+    userCache.getUsers(true);
 
     // Return a response with status 200 and JSON as type
     return Response.status(400).entity("Endpoint not implemented yet").build();
