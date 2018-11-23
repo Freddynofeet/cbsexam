@@ -62,11 +62,11 @@ public final class Hashing {
 
     return rawString;
   }
-  //Metode som hasher ved hjælp af md5
+  //Metode som hasher ved hjælp af Sha
   // Selv tilføjet
   public String hashWithSalt(String str){
 
     String salt = str+this.salt;
-    return md5(salt);
+    return sha(salt);
   }
 }

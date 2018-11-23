@@ -155,7 +155,7 @@ public class UserEndpoints {
   }
 
 // Selv tilføjet
-  // TODO: Make the system able to update users
+  // TODO: Make the system able to update users : almost fixed
   @POST
   @Path("/update")
   public Response updateUser(String updateInfo) {
