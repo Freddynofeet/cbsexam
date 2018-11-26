@@ -111,7 +111,7 @@ public class DatabaseController {
     return result;
   }
 
-    public void deleteUpdate(String sql) {
+    public boolean deleteUpdate(String sql) {
 
     if (connection == null){
       connection = getConnection();
@@ -121,8 +121,11 @@ public class DatabaseController {
 
       deleteUser.executeUpdate();
 
+      return true;
+
     } catch (SQLException e){
       e.getErrorCode();
     }
+      return false;
     }
 }

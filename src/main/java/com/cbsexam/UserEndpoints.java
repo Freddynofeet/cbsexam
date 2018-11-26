@@ -155,27 +155,23 @@ public class UserEndpoints {
   }
 
 // Selv tilføjet
-  // TODO: Make the system able to update users : almost fixed
+  // TODO: Make the system able to update users : fixed
   @POST
-  @Path("/update")
+  @Path("/update/")
   public Response updateUser(String updateInfo) {
 
-    User userInfo = new Gson().fromJson(updateInfo, User.class);
+      User userInfo = new Gson().fromJson(updateInfo, User.class);
 
-    DecodedJWT jwt = null;
-    try{
-      jwt = JWT.decode(userInfo.getToken());
-    }catch (JWTDecodeException e){
-      e.printStackTrace();
+      User userToChange = UserController.updateUser(userInfo);
+      String json = new Gson().toJson(userToChange);
+
+      userCache.getUsers(true);
+
+      if (userToChange != null){
+        return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
+      } else {
+        return Response.status(400).entity("Endpoint not implemented yet").build();
+      }
     }
 
-    User userToChange = new Gson().fromJson(jwt.getClaim("userJson").asString(), User.class);
-
-    UserController.updateUser(userInfo, userToChange);
-
-    userCache.getUsers(true);
-
-    // Return a response with status 200 and JSON as type
-    return Response.status(400).entity("Endpoint not implemented yet").build();
   }
-}

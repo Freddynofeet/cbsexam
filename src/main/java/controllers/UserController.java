@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.google.gson.Gson;
 import model.User;
 import utils.Hashing;
@@ -85,9 +87,8 @@ public class UserController {
                         rs.getString("email"),
                         rs.getLong("created_at"));
         //Selv tilføjet
-        String json = new Gson().toJson(user);
         Algorithm algorithm = Algorithm.HMAC256("secret");
-        String token = JWT.create().withClaim("userJson", json).sign(algorithm);
+        String token = JWT.create().withClaim("userID", user.getId()).sign(algorithm);
         user.setToken(token);
 
         // return the create object
@@ -201,18 +202,31 @@ public class UserController {
 
   }
 
-  public static void updateUser(User userInfo, User userToChange) {
+  public static User updateUser(User userInfo) {
 // Selv tilføjet
 
-    Hashing hashing = new Hashing();
+   // Hashing hashing = new Hashing();
 
-    if (dbCon == null)
+    if (dbCon == null) {
       dbCon = new DatabaseController();
+    }
+
+    DecodedJWT jwt = null;
+    try{
+      jwt = JWT.decode(userInfo.getToken());
+    }catch (JWTDecodeException e){
+      e.printStackTrace();
+    }
+
+    int id = jwt.getClaim("userID").asInt();
+
+    User userToChange = getUser(id);
+
 
     if (userInfo.getFirstname() != null)
       userToChange.setFirstname(userInfo.getFirstname());
     if (userInfo.getLastname() != null)
-      userToChange.setLastname(userInfo.lastname);
+      userToChange.setLastname(userInfo.getLastname());
     if (userInfo.getPassword() != null)
       userToChange.setPassword(userInfo.getPassword());
     if (userInfo.getEmail() != null)
@@ -221,12 +235,16 @@ public class UserController {
     //The password is hased before saving it.
     String sql = "UPDATE user set first_name= '" + userToChange.getFirstname() +
             "', last_name = '" + userToChange.getLastname() +
-            "', password = '" + hashing.hashWithSalt(userToChange.getPassword()) +
+            "', password = '" + userToChange.getPassword() +
             "', email = '" + userToChange.getEmail() +
-            "', WHERE id = " + userToChange.getId();
+            "' WHERE id = " + userToChange.getId();
 
-    dbCon.deleteUpdate(sql);
 
+    if (dbCon.deleteUpdate(sql)) {
+      return userToChange;
+    }
+
+return null;
   }
 
 }
