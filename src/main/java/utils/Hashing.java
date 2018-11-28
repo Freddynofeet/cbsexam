@@ -9,7 +9,7 @@ public final class Hashing {
 
   //Salt
   //Selv tilføjet
-  private String salt="Baarts";
+  private String salt = Config.getHashingKey();
 
   // TODO: You should add a salt and make this secure : Fix
   public static String md5(String rawString) {

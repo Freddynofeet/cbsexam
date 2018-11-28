@@ -21,6 +21,7 @@ public final class Config {
   private static String SOLR_PATH;
   private static String SOLR_CORE;
   private static long Cache_TTL;
+  private static String HASHINGKEY;
 
 
   public static long getCacheTtl() {
@@ -67,6 +68,10 @@ public final class Config {
     return SOLR_CORE;
   }
 
+  public static String getHashingKey() {
+    return HASHINGKEY;
+  }
+
   public static void initializeConfig() throws IOException {
 
     // Init variables to parse JSON
@@ -102,6 +107,8 @@ public final class Config {
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     Cache_TTL = json.get("CACHE_TTL").getAsLong();
     ENCRYOPTIONKEY = json.get("ENCRYPTIONKEY").getAsString();
+    HASHINGKEY = json.get("HASHINGKEY").toString();
 
   }
+
 }

@@ -170,7 +170,7 @@ public class UserController {
             + "', '"
             + user.getLastname()
             + "', '"
-            + hashing.hashWithSalt(user.getPassword()) //selv tilføjet
+            + hashing.hashWithSalt(user.getPassword()) //The password is hashed
             + "', '"
             + user.getEmail()
             + "', "
