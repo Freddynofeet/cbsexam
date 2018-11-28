@@ -205,7 +205,7 @@ public class UserController {
   public static User updateUser(User userInfo) {
 // Selv tilføjet
 
-   // Hashing hashing = new Hashing();
+    Hashing hashing = new Hashing();
 
     if (dbCon == null) {
       dbCon = new DatabaseController();
@@ -235,7 +235,7 @@ public class UserController {
     //The password is hased before saving it.
     String sql = "UPDATE user set first_name= '" + userToChange.getFirstname() +
             "', last_name = '" + userToChange.getLastname() +
-            "', password = '" + userToChange.getPassword() +
+            "', password = '" + hashing.hashWithSalt(userToChange.getPassword()) +
             "', email = '" + userToChange.getEmail() +
             "' WHERE id = " + userToChange.getId();
 

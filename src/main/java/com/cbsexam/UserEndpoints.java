@@ -73,8 +73,6 @@ public class UserEndpoints {
     // Added encryption
     json = Encryption.encryptDecryptXOR(json);
 
-   // json = Encryption.encryptDecryptXOR(json);
-
     // Return the users with the status code 200
     return Response.status(200).type(MediaType.APPLICATION_JSON).entity(json).build();
   }
@@ -108,6 +106,9 @@ public class UserEndpoints {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response loginUser(String loginInfo) {
 
+    // This is information to the log about where in the code we are
+    Log.writeLog(this.getClass().getName(),this, "login user",0);
+
     User loginUser = new Gson().fromJson(loginInfo, User.class);
 
     User dbUser = UserController.getUserByEmail(loginUser.getEmail());
@@ -128,6 +129,10 @@ public class UserEndpoints {
   @DELETE
   @Path("/delete/")
   public Response deleteUser(String token) {
+
+    // This is information to the log about where in the code we are
+    Log.writeLog(this.getClass().getName(),this, "Deleting an user",0);
+
 //selv tilføjet
     try {
 
@@ -155,10 +160,13 @@ public class UserEndpoints {
   }
 
 // Selv tilføjet
-  // TODO: Make the system able to update users : fixed
+  // TODO: Make the system able to update users : fix
   @POST
   @Path("/update/")
   public Response updateUser(String updateInfo) {
+
+    // This is information to the log about where in the code we are
+    Log.writeLog(this.getClass().getName(),this, "Updating an user",0);
 
       User userInfo = new Gson().fromJson(updateInfo, User.class);
 

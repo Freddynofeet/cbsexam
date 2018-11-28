@@ -9,7 +9,7 @@ import java.util.ArrayList;
 //TODO: Build this cache and use it. : FIX
 // Selv tilføjet
 public class UserCache {
-    // List of products
+    // List of users
     private ArrayList<User> users;
 
     // Time cache should live

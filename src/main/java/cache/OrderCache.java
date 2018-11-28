@@ -10,7 +10,7 @@ import java.util.ArrayList;
 //Selv tilføjet
 public class OrderCache {
 
-    // List of products
+    // List of orders
     private ArrayList<Order> orders;
 
     // Time cache should live
