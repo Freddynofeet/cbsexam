@@ -41,10 +41,10 @@ public final class Hashing {
     return null;
   }
 
-  // TODO: You should add a salt and make this secure
+  // TODO: You should add a salt and make this secure : fix
   public static String sha(String rawString) {
     try {
-      // We load the hashing algoritm we wish to use.
+      // We load the hashing algorithm we wish to use.
       MessageDigest digest = MessageDigest.getInstance("SHA-256");
 
       // We convert to byte array

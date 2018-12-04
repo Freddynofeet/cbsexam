@@ -15,13 +15,13 @@ public final class Config {
   private static String DATABASE_PASSWORD;
   private static String DATABASE_NAME;
   private static boolean ENCRYPTION;
-  private static String ENCRYOPTIONKEY;
+  private static String ENCRYOPTION_KEY;
   private static String SOLR_HOST;
   private static int SOLR_PORT;
   private static String SOLR_PATH;
   private static String SOLR_CORE;
   private static long Cache_TTL;
-  private static String HASHINGKEY;
+  private static String HASHING_KEY;
 
 
   public static long getCacheTtl() {
@@ -50,7 +50,7 @@ public final class Config {
 
   public static Boolean getEncryption() { return ENCRYPTION; }
 
-  public static char[] getEncryptionkey() { return ENCRYOPTIONKEY.toCharArray(); }
+  public static char[] getEncryptionkey() { return ENCRYOPTION_KEY.toCharArray(); }
 
   public static String getSolrHost() {
     return SOLR_HOST;
@@ -69,7 +69,7 @@ public final class Config {
   }
 
   public static String getHashingKey() {
-    return HASHINGKEY;
+    return HASHING_KEY;
   }
 
   public static void initializeConfig() throws IOException {
@@ -106,8 +106,8 @@ public final class Config {
     SOLR_PATH = json.get("SOLR_PATH").toString().replace("\"", "");
     SOLR_CORE = json.get("SOLR_CORE").toString().replace("\"", "");
     Cache_TTL = json.get("CACHE_TTL").getAsLong();
-    ENCRYOPTIONKEY = json.get("ENCRYPTIONKEY").getAsString();
-    HASHINGKEY = json.get("HASHINGKEY").toString();
+    ENCRYOPTION_KEY = json.get("ENCRYPTION_KEY").getAsString();
+    HASHING_KEY = json.get("HASHING_KEY").toString();
 
   }
 
