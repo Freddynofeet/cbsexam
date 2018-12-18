@@ -48,7 +48,7 @@ public class OrderController {
 
 
         User user = new User(
-                rs.getInt("id"),
+                rs.getInt("user_id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 rs.getString("password"),
@@ -65,7 +65,7 @@ public class OrderController {
         Address shippingAddress = new Address(
                 rs.getInt("shipping_address_id"),
                 rs.getString("name"),
-                rs.getString("billing"),
+                rs.getString("shipping"),
                 rs.getString("city"),
                 rs.getString("zipcode")
         );
@@ -107,13 +107,12 @@ public class OrderController {
     }
 
     // Build SQL with joins
-    String sql = "SELECT *, billing.street_address as billing, shipping.street_address as shipping\n" +
-            "FROM orders \n" +
-            "JOIN user on orders.user_id = user.id\n" +
-            "JOIN address as billing\n" +
-            "ON orders.billing_address_id = billing.id\n" +
-            "JOIN address as shipping\n" +
-            "ON orders.shipping_address_id = shipping.id";
+    String sql = "SELECT *,\n" +
+            "billing.street_address as billing, shipping.street_address as shipping\n" +
+            "from orders\n" +
+            "join user on orders.user_id = user.id\n" +
+            "join address as billing on orders.billing_address_id=billing.id\n" +
+            "join address as shipping on orders.shipping_address_id=shipping.id";
 
     ResultSet rs = dbCon.query(sql);
     ArrayList<Order> orders = new ArrayList<Order>();
@@ -126,7 +125,7 @@ public class OrderController {
 
 
         User user = new User(
-                rs.getInt("id"),
+                rs.getInt("user_id"),
                 rs.getString("first_name"),
                 rs.getString("last_name"),
                 rs.getString("password"),
@@ -143,7 +142,7 @@ public class OrderController {
         Address shippingAddress = new Address(
                 rs.getInt("shipping_address_id"),
                 rs.getString("name"),
-                rs.getString("billing"),
+                rs.getString("shipping"),
                 rs.getString("city"),
                 rs.getString("zipcode")
         );

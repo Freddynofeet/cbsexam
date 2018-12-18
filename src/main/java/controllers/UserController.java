@@ -91,7 +91,7 @@ public class UserController {
         String token = JWT.create().withClaim("userID", user.getId()).sign(algorithm);
         user.setToken(token);
 
-        // return the create object
+
         return user;
       } else {
         System.out.println("No User found");
@@ -100,7 +100,7 @@ public class UserController {
       System.out.println(ex.getMessage());
     }
 
-    // Return null
+
     return user;
   }
 

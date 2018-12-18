@@ -107,12 +107,12 @@ public class ProductController {
       while (rs.next()) {
         Product product =
             new Product(
-                rs.getInt("id"),
-                rs.getString("name"),
-                rs.getString("sku"),
-                rs.getFloat("price"),
-                rs.getString("description"),
-                rs.getInt("stock"));
+                    rs.getInt("id"),
+                    rs.getString("product_name"),
+                    rs.getString("sku"),
+                    rs.getFloat("price"),
+                    rs.getString("description"),
+                    rs.getInt("stock"));
 
         products.add(product);
       }
