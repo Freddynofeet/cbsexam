@@ -38,7 +38,8 @@ public class ProductController {
                 rs.getString("sku"),
                 rs.getFloat("price"),
                 rs.getString("description"),
-                rs.getInt("stock"));
+                rs.getInt("stock"),
+                    rs.getLong("created_at"));
 
         // Return the product
         return product;
@@ -73,7 +74,8 @@ public class ProductController {
                 rs.getString("sku"),
                 rs.getFloat("price"),
                 rs.getString("description"),
-                rs.getInt("stock"));
+                rs.getInt("stock"),
+                    rs.getLong("created_at"));
 
         return product;
       } else {
@@ -112,7 +114,8 @@ public class ProductController {
                     rs.getString("sku"),
                     rs.getFloat("price"),
                     rs.getString("description"),
-                    rs.getInt("stock"));
+                    rs.getInt("stock"),
+                    rs.getLong("created_at"));
 
         products.add(product);
       }

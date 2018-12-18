@@ -10,13 +10,14 @@ public class Product {
   private int stock;
   private long createdTime;
 
-  public Product(int id, String name, String sku, float price, String description, int stock) {
+  public Product(int id, String name, String sku, float price, String description, int stock, long createdtime) {
     this.id = id;
     this.name = name;
     this.sku = sku;
     this.price = price;
     this.description = description;
     this.stock = stock;
+    this.createdTime = createdtime;
   }
 
   public int getId() {
