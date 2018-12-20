@@ -1,3 +1,4 @@
+"67c5341","Frederik Baarts","frederikbaarts@Frederiks-MacBook-Pro-2.local","Tue, 18 Dec 2018 17:23:30 +0100","made changes in the productController",	 5 files changed, 42 insertions(+), 7 deletions(-)	
 "e111670","Frederik Baarts","frederikbaarts@Frederiks-MacBook-Pro-2.local","Tue, 18 Dec 2018 13:19:26 +0100","Created a try catch to create user because the email is a unique key",	 5 files changed, 43 insertions(+), 31 deletions(-)	
 "e6de711","Frederik Baarts","frederikbaarts@Frederiks-MacBook-Pro-2.local","Tue, 4 Dec 2018 15:48:33 +0100","Tilføjet min redigerede database dump",	 2 files changed, 174 insertions(+), 1 deletion(-)	
 "83b0cc4","Frederik Baarts","frederikbaarts@Frederiks-MacBook-Pro-2.local","Tue, 4 Dec 2018 12:34:18 +0100","Updated the OrderController - now without nested queries",	 3 files changed, 46 insertions(+), 20 deletions(-)	

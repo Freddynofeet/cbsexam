@@ -78,7 +78,7 @@ public class UserEndpoints {
   }
 
   @POST
-  @Path("/create/")
+  @Path("/create")
   @Consumes(MediaType.APPLICATION_JSON)
   public Response createUser(String body) {
 
@@ -100,6 +100,7 @@ public class UserEndpoints {
         return Response.status(400).entity("Could not create user - email might been taken").build();
       }
     }catch (Exception e){
+      // Return a response with status 400 and a error message
       return Response.status(400).entity("Error creating user").build();
     }
 
@@ -121,10 +122,11 @@ public class UserEndpoints {
     String json =new Gson().toJson(dbUser);
 
     if (loginUser.getEmail().equals(dbUser.getEmail()) && loginUser.getPassword().equals(dbUser.getPassword())){
+      // Return a response with status 200 and JSON as type
       return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
     } else {
-      // Return a response with status 200 and JSON as type
-      return Response.status(400).entity("Endpoint not implemented yet").build();
+      // Return a response with status 400 and a error message
+      return Response.status(400).entity("Could not login").build();
 
     }
 
@@ -155,11 +157,12 @@ public class UserEndpoints {
         UserController.delete(user.getId());
         userCache.getUsers(true);
 
+      // Return a response with status 200
         return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity("User with id is now deleted").build();
-
 
 // Selv tilføjet
     } catch (Exception e) {
+      // Return a response with status 400 and a error message
       return Response.status(400).type(MediaType.APPLICATION_JSON_TYPE).entity("Could not delete user or does not exist").build();
     }
   }
@@ -181,9 +184,11 @@ public class UserEndpoints {
       userCache.getUsers(true);
 
       if (userToChange != null){
+        // Return a response with status 200 and JSON as type
         return Response.status(200).type(MediaType.APPLICATION_JSON_TYPE).entity(json).build();
       } else {
-        return Response.status(400).entity("Endpoint not implemented yet").build();
+        // Return a response with status 400 and a error message
+        return Response.status(400).entity("Could not update user").build();
       }
     }
 
